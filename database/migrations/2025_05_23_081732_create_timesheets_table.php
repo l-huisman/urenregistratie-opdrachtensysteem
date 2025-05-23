@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('hours', 8, 2);
             $table->boolean('is_bugfix')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
