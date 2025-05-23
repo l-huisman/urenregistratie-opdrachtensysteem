@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('assignment_lines', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('assignment_id')->constrained()->onDelete('cascade');
+            $table->foreignId('assignment_id')->constrained()->cascadeOnDelete();
             $table->text('description');
             $table->decimal('hours', 8, 2);
             $table->timestamps();

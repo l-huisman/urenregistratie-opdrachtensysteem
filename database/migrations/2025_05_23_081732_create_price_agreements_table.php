@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('price_agreements', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('company_id')->constrained()->onDelete('cascade');
+            $table->foreignId('company_id')->constrained()->cascadeOnDelete();
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->decimal('price', 8, 2)->comment('Assuming this is a fixed price for something'); // Adjust precision as needed
