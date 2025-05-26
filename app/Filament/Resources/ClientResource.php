@@ -9,7 +9,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 
 class ClientResource extends Resource
 {
@@ -34,7 +34,7 @@ class ClientResource extends Resource
                 Forms\Components\TextInput::make('address')
                     ->maxLength(255),
                 Forms\Components\Select::make('companies')
-                    ->multiple() // Allow multiple selections
+                    ->multiple()
                     ->relationship('companies', 'name')
                     ->required(),
             ]);
@@ -43,7 +43,7 @@ class ClientResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(function (\Illuminate\Database\Eloquent\Builder $query) {
+            ->modifyQueryUsing(function (Builder $query) {
                 $query->with('companies');
             })
             ->columns([
