@@ -28,10 +28,10 @@ class TimesheetFactory extends Factory
     {
         return [
             'assignment_id' => Assignment::factory(),
-            'user_id' => User::factory(), // Assumes User model and factory exist
+            'user_id' => User::factory(),
             'description' => $this->faker->paragraph(),
             'hours' => $this->faker->randomFloat(2, 0.5, 8),
-            'is_bugfix' => $this->faker->boolean(20), // 20% chance of being a bugfix
+            'is_bugfix' => $this->faker->boolean(10),
         ];
     }
 }

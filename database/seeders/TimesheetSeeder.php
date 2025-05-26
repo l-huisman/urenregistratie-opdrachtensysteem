@@ -15,7 +15,7 @@ class TimesheetSeeder extends Seeder
     public function run(): void
     {
         $assignments = Assignment::all();
-        $users = User::whereDoesntHave('roles', function ($query) {
+        $users = User::whereDoesntHave('role', function ($query) {
             $query->where('slug', 'klant');
         })->get();
 

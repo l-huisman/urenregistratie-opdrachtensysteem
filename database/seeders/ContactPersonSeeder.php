@@ -22,9 +22,11 @@ class ContactPersonSeeder extends Seeder
         }
 
         foreach ($companies as $company) {
-            ContactPerson::factory()->count(rand(1, 3))->create([
-                'company_id' => $company->id,
-            ]);
+            $contactPersons = ContactPerson::factory()->count(rand(1, 3))->create();
+
+            foreach ($contactPersons as $contactPerson) {
+                $contactPerson->companies()->attach($company->id);
+            }
         }
     }
 }

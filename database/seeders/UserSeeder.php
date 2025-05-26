@@ -14,32 +14,36 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create an administrator
         $adminRole = Role::where('slug', 'administrator')->first();
         User::factory()->create([
-            'name' => 'Admin User',
+            'name' => 'Admin',
             'email' => 'admin@example.com',
-            'password' => Hash::make('password'), // Change as needed
-        ])->roles()->attach($adminRole);
+            'password' => Hash::make('password'),
+            'role_id' => $adminRole->id,
+        ]);
 
-        // Create a manager
         $managerRole = Role::where('slug', 'manager')->first();
         User::factory()->create([
-            'name' => 'Manager User',
+            'name' => 'Manager',
             'email' => 'manager@example.com',
             'password' => Hash::make('password'),
-        ])->roles()->attach($managerRole);
+            'role_id' => $managerRole->id,
+        ]);
 
-        // Create a regular user
         $gebruikerRole = Role::where('slug', 'gebruiker')->first();
-        User::factory()->count(5)->create()->each(function ($user) use ($gebruikerRole) {
-            $user->roles()->attach($gebruikerRole);
-        });
+        User::factory()->create([
+            'name' => 'Gebruiker',
+            'email' => 'gebruiker@example.com',
+            'password' => Hash::make('password'),
+            'role_id' => $gebruikerRole->id,
+        ]);
 
-        // Create a client user
         $klantRole = Role::where('slug', 'klant')->first();
-        User::factory()->count(3)->create()->each(function ($user) use ($klantRole) {
-            $user->roles()->attach($klantRole);
-        });
+        User::factory()->create([
+            'name' => 'Klant',
+            'email' => 'klant@example.com',
+            'password' => Hash::make('password'),
+            'role_id' => $klantRole->id,
+        ]);
     }
 }

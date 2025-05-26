@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('company_id')->constrained()->cascadeOnDelete();
             $table->date('start_date');
             $table->date('end_date')->nullable();
-            $table->decimal('price', 8, 2)->comment('Assuming this is a fixed price for something'); // Adjust precision as needed
-            $table->decimal('rate', 8, 2)->comment('Assuming this is an hourly rate'); // Adjust precision as needed
+            $table->decimal('price', 8, 2)->comment('Assuming this is a fixed price for something');
+            $table->decimal('rate', 8, 2)->comment('Assuming this is an hourly rate');
             $table->timestamps();
             $table->softDeletes();
         });
