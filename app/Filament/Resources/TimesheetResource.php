@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources;
+use App\Filament\Resources\TimesheetResource\Pages;
 use App\Models\Timesheet;
-use Filament\Forms;
+use Carbon\Carbon;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -20,52 +20,38 @@ class TimesheetResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('assignment_id')
-                    ->relationship('assignment', 'name')
-                    ->required(),
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required(),
-                Forms\Components\Textarea::make('description')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('hours')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\Toggle::make('is_bugfix')
-                    ->required(),
+
             ]);
     }
 
+
     public static function table(Table $table): Table
     {
+        $currentWeek = Carbon::now()->weekOfYear;
+
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('assignment.name')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('id')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('user.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('hours')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('is_bugfix')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('User')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('week_' . ($currentWeek - 3))
+                    ->label('Week ' . ($currentWeek - 3)),
+                Tables\Columns\TextColumn::make('week_' . ($currentWeek - 2))
+                    ->label('Week ' . ($currentWeek - 2)),
+                Tables\Columns\TextColumn::make('week_' . ($currentWeek - 1))
+                    ->label('Week ' . ($currentWeek - 1)),
+                Tables\Columns\TextColumn::make('week_' . $currentWeek)
+                    ->label('Week ' . $currentWeek),
             ])
-            ->filters([
-                //
-            ])
+        ->filters([
+            // Implement a filter where admins can filter by weeks
+        ], layout: Tables\Enums\FiltersLayout::AboveContent)
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -84,9 +70,10 @@ class TimesheetResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Resources\TimesheetResource\Pages\ListTimesheets::route('/'),
-            'create' => Resources\TimesheetResource\Pages\CreateTimesheet::route('/create'),
-            'edit' => Resources\TimesheetResource\Pages\EditTimesheet::route('/{record}/edit'),
+            'index' => Pages\ListTimesheets::route('/'),
+            'create' => Pages\CreateTimesheet::route('/create'),
+            'view' => Pages\ViewTimesheet::route('/{record}'),
+            'edit' => Pages\EditTimesheet::route('/{record}/edit'),
         ];
     }
 }

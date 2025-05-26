@@ -4,17 +4,16 @@ namespace App\Filament\Resources\TimesheetResource\Pages;
 
 use App\Filament\Resources\TimesheetResource;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\ViewRecord;
 
-class EditTimesheet extends EditRecord
+class ViewTimesheet extends ViewRecord
 {
     protected static string $resource = TimesheetResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ViewAction::make(),
-            Actions\DeleteAction::make(),
+            Actions\EditAction::make(),
         ];
     }
 }

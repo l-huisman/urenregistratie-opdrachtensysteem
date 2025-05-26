@@ -3,21 +3,21 @@
 namespace Database\Factories;
 
 use App\Models\Company;
-use App\Models\ContactPerson;
+use App\Models\Client;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ContactPerson>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Client>
  */
-class ContactPersonFactory extends Factory
+class ClientFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = ContactPerson::class;
+    protected $model = Client::class;
 
     /**
      * Define the model's default state.
@@ -36,6 +36,6 @@ class ContactPersonFactory extends Factory
 
     public function companies(): BelongsToMany
     {
-        return $this->belongsToMany(Company::class, 'company_contact_person');
+        return $this->belongsToMany(Company::class, 'company_client');
     }
 }

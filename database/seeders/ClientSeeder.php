@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Company;
-use App\Models\ContactPerson;
+use App\Models\Client;
 use Illuminate\Database\Seeder;
 
-class ContactPersonSeeder extends Seeder
+class ClientSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -22,10 +22,10 @@ class ContactPersonSeeder extends Seeder
         }
 
         foreach ($companies as $company) {
-            $contactPersons = ContactPerson::factory()->count(rand(1, 3))->create();
+            $clients = Client::factory()->count(rand(1, 3))->create();
 
-            foreach ($contactPersons as $contactPerson) {
-                $contactPerson->companies()->attach($company->id);
+            foreach ($clients as $client) {
+                $client->companies()->attach($company->id);
             }
         }
     }

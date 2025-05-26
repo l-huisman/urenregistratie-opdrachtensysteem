@@ -23,9 +23,9 @@ class Company extends Model
         'logo',
     ];
 
-    public function contactPersons(): BelongsToMany
+    public function clients(): BelongsToMany
     {
-        return $this->belongsToMany(ContactPerson::class);
+        return $this->belongsToMany(Client::class);
     }
 
     public function priceAgreements(): HasMany

@@ -7,23 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ContactPerson extends Model
+class Client extends Model
 {
-    /** @use HasFactory<\Database\Factories\ContactPersonFactory> */
+    /** @use HasFactory<\Database\Factories\ClientFactory> */
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name',
         'email',
-        'phone',
+        'phone_number',
         'address',
     ];
-
-    protected $table = 'contact_persons'; // Otherwise it will be 'contact_people' thanks laravel...
 
 
     public function companies(): BelongsToMany
     {
-        return $this->belongsToMany(Company::class, 'company_contact_person');
+        return $this->belongsToMany(Company::class);
     }
 }
