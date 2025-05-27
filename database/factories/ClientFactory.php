@@ -2,10 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Company;
 use App\Models\Client;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @extends Factory<Client>
@@ -27,15 +25,7 @@ class ClientFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
             'phone_number' => $this->faker->phoneNumber(),
-            'address' => $this->faker->optional()->address(),
         ];
-    }
-
-    public function companies(): BelongsToMany
-    {
-        return $this->belongsToMany(Company::class);
     }
 }

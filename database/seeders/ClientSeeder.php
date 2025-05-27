@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Company;
 use App\Models\Client;
+use App\Models\Company;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class ClientSeeder extends Seeder
@@ -21,12 +22,20 @@ class ClientSeeder extends Seeder
             $companies = Company::all();
         }
 
-        foreach ($companies as $company) {
-            $clients = Client::factory()->count(rand(1, 3))->create();
+        $users = User::where('role_id', 1)->get();
+        $clients = [];
 
-            foreach ($clients as $client) {
-                $client->companies()->attach($company->id);
-            }
+        foreach ($users as $user) {
+            $client = Client::factory()->create([
+                'user_id' => $user->id,
+            ]);
+            $clients[] = $client;
+        }
+
+
+        foreach ($clients as $client) {
+            $company = $companies->random();
+            $client->companies()->attach($company->id);
         }
     }
 }

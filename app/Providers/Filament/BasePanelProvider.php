@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use App\Filament\Resources\AssignmentResource;
 use App\Filament\Resources\ClientResource;
 use App\Filament\Resources\TimesheetResource;
+use App\Filament\Resources\UserResource;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -39,6 +40,7 @@ class BasePanelProvider extends PanelProvider
                 AssignmentResource::class,
                 TimesheetResource::class,
                 ClientResource::class,
+                UserResource::class,
             ])
             ->widgets([
                 Widgets\AccountWidget::class,

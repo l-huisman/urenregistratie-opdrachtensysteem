@@ -31,7 +31,7 @@ class PriceAgreementFactory extends Factory
         return [
             'company_id' => Company::factory(),
             'start_date' => $startDate,
-            'end_date' => $endDate ? $endDate->format('Y-m-d') : null,
+            'end_date' => $endDate?->format('Y-m-d'),
             'price' => $this->faker->randomFloat(2, 100, 5000),
             'rate' => $this->faker->randomFloat(2, 50, 200),
         ];
