@@ -14,7 +14,14 @@ class EditClient extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->before(function (){
+                    // Ensure the user_id is set to null before deletion because of soft delete
+                    if ($this->record->user_id) {
+                        $this->record->user_id = null;
+                        $this->record->save();
+                    }
+                })
         ];
     }
 

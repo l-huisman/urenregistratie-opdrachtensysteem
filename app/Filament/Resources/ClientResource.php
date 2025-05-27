@@ -33,7 +33,22 @@ class ClientResource extends Resource
                     ->description('Select an existing user or create a new one.')
                     ->schema([
                         Forms\Components\Select::make('user_id')
-                            ->relationship('user', 'name')
+                            ->relationship(
+                                name: 'user',
+                                titleAttribute: 'name',
+                                modifyQueryUsing: function (Builder $query, ?Client $record) {
+                                    $query->where(function (Builder $userQuery) use ($record) {
+                                        $userQuery->whereNotIn('id', function (\Illuminate\Database\Query\Builder $subQuery) {
+                                            $subQuery->select('user_id')
+                                                ->from('clients')
+                                                ->whereNotNull('user_id');
+                                        });
+                                        if ($record && $record->user_id) {
+                                            $userQuery->orWhere('id', $record->user_id);
+                                        }
+                                    });
+                                }
+                            )
                             ->label('User (Client)')
                             ->required()
                             ->searchable()
