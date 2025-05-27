@@ -39,11 +39,11 @@ class BasePanelProvider extends PanelProvider
                 Pages\Dashboard::class,
             ])
             ->resources([
+                UserResource::class,
+                ClientResource::class,
+                CompanyResource::class,
                 AssignmentResource::class,
                 TimesheetResource::class,
-                ClientResource::class,
-                UserResource::class,
-                CompanyResource::class,
             ])
             ->widgets([
                 Widgets\AccountWidget::class,
