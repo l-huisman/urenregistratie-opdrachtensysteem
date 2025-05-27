@@ -5,17 +5,14 @@ namespace App\Policies;
 use App\Models\Client;
 use App\Models\User;
 
-class ClientPolicy
+class ClientPolicy extends BasePolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return match ($user->role->slug) {
-            'manager', 'administrator' => true,
-            default => false,
-        };
+        return $this->IsAdminOrManager($user);
     }
 
     /**
@@ -23,7 +20,7 @@ class ClientPolicy
      */
     public function view(User $user, Client $client): bool
     {
-        return true;
+        return true; // TODO refactor this to use inheritance on the Client model from User model
     }
 
     /**
@@ -31,10 +28,7 @@ class ClientPolicy
      */
     public function create(User $user): bool
     {
-        return match ($user->role->slug) {
-            'manager', 'administrator' => true,
-            default => false,
-        };
+        return $this->isAdminOrManager($user);
     }
 
     /**
@@ -42,10 +36,7 @@ class ClientPolicy
      */
     public function update(User $user, Client $client): bool
     {
-        return match ($user->role->slug) {
-            'klant', 'manager', 'administrator' => true,
-            default => false,
-        };
+        return $this->isAdminOrManager($user); // TODO also add check for self for client when inheritance is implemented
     }
 
     /**
@@ -53,10 +44,7 @@ class ClientPolicy
      */
     public function delete(User $user, Client $client): bool
     {
-        return match ($user->role->slug) {
-            'administrator' => true,
-            default => false,
-        };
+        return $this->isAdminOrManager($user);
     }
 
     /**
@@ -64,10 +52,7 @@ class ClientPolicy
      */
     public function restore(User $user, Client $client): bool
     {
-        return match ($user->role->slug) {
-            'administrator' => true,
-            default => false,
-        };
+        return $this->isAdminOrManager($user);
     }
 
     /**

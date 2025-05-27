@@ -5,17 +5,14 @@ namespace App\Policies;
 use App\Models\Timesheet;
 use App\Models\User;
 
-class TimesheetPolicy
+class TimesheetPolicy extends BasePolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return match ($user->role->slug) {
-            'manager', 'administrator' => true,
-            default => false,
-        };
+        return $this->isAdminOrManager($user);
     }
 
     /**
@@ -23,11 +20,7 @@ class TimesheetPolicy
      */
     public function view(User $user, Timesheet $timesheet): bool
     {
-        return match ($user->role->slug) {
-            'gebruiker' => $this->isOwner($user, $timesheet),
-            'manager', 'administrator' => true,
-            default => false,
-        };
+        return $this->isAdminOrManager($user) || $this->isOwner($user, $timesheet);
     }
 
     /**
@@ -43,11 +36,7 @@ class TimesheetPolicy
      */
     public function update(User $user, Timesheet $timesheet): bool
     {
-        return match ($user->role->slug) {
-            'gebruiker' => $this->isOwner($user, $timesheet),
-            'manager', 'administrator' => true,
-            default => false,
-        };
+        return $this->isAdminOrManager($user) || $this->isOwner($user, $timesheet);
     }
 
     /**
@@ -74,7 +63,7 @@ class TimesheetPolicy
         return false; // No timesheets should be permanently deleted by default
     }
 
-    private function isOwner(User $user, Timesheet $timesheet)
+    protected function isOwner(User $user, Timesheet $timesheet): bool
     {
         return $user->id === $timesheet->user_id;
     }
