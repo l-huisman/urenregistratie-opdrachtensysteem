@@ -7,7 +7,7 @@ use App\Models\PriceAgreement;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PriceAgreement>
+ * @extends Factory<PriceAgreement>
  */
 class PriceAgreementFactory extends Factory
 {

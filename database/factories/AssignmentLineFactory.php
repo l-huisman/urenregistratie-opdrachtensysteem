@@ -7,7 +7,7 @@ use App\Models\AssignmentLine;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\AssignmentLine>
+ * @extends Factory<AssignmentLine>
  */
 class AssignmentLineFactory extends Factory
 {

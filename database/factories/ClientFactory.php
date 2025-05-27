@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Client>
+ * @extends Factory<Client>
  */
 class ClientFactory extends Factory
 {
@@ -36,6 +36,6 @@ class ClientFactory extends Factory
 
     public function companies(): BelongsToMany
     {
-        return $this->belongsToMany(Company::class, 'company_client');
+        return $this->belongsToMany(Company::class);
     }
 }
