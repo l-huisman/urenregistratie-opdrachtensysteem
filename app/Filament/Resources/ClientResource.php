@@ -83,8 +83,7 @@ class ClientResource extends Resource
                                     ->options(Role::where('name', 'klant')->pluck('name', 'id'))
                                     ->label('Role')
                                     ->required()
-                                    ->default(Role::where('name', 'klant')->first()?->id) // Pre-select 'klant' role
-                                    ->disabled(), // Optionally disable if only 'klant' is allowed
+                                    ->default(Role::where('name', 'klant')->first()?->id)
                             ])
                             ->createOptionAction(function (Forms\Components\Actions\Action $action) {
                                 return $action
@@ -121,7 +120,7 @@ class ClientResource extends Resource
                     ),
                 Forms\Components\Select::make('user_role_id_display')
                     ->label('User Role')
-                    ->options(Role::pluck('name', 'id')) // Keep all roles for display if needed, or filter to 'klant'
+                    ->options(Role::pluck('name', 'id'))
                     ->required(fn(Forms\Get $get) => filled($get('user_id')))
                     ->disabled(fn(Forms\Get $get) => !$get('user_id'))
                     ->searchable()

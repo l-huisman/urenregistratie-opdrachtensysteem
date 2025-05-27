@@ -3,9 +3,13 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Policies\Concerns\CheckOwner;
+use App\Policies\Concerns\ChecksRoles;
 
 abstract class BasePolicy
 {
+    use ChecksRoles, CheckOwner;
+
     protected function isAdmin(User $user): bool
     {
         return $user->role->slug === 'administrator';

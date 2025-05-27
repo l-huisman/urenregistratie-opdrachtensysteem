@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('kvk_number')->nullable();
             $table->string('website')->nullable();
             $table->text('address')->nullable();
-            $table->string('phone')->nullable();
+            $table->string('phone_number')->nullable();
             $table->string('email')->nullable();
             $table->string('logo')->nullable();
             $table->timestamps();

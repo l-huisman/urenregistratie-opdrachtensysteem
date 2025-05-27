@@ -27,11 +27,11 @@ class CompanyFactory extends Factory
         return [
             'name' => $this->faker->company(),
             'address' => $this->faker->address(),
-            'phone' => $this->faker->phoneNumber(),
+            'phone_number' => $this->faker->phoneNumber(),
             'email' => $this->faker->unique()->safeEmail(),
             'website' => $this->faker->optional()->url(),
             'kvk_number' => $this->faker->unique()->numerify('########'), // 8 digits KVK
-            'logo' => $this->faker->optional()->imageUrl(),
+            'logo' => 'https://picsum.photos/seed/picsum/320/320'
         ];
     }
 }

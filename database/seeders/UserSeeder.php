@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         $adminRole = Role::where('slug', 'administrator')->first();
         User::factory()->create([
             'name' => 'Admin',
-            'email' => 'admin@example.com',
+            'email' => 'admin@smit.net',
             'password' => Hash::make('password'),
             'role_id' => $adminRole->id,
         ]);
@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
         $managerRole = Role::where('slug', 'manager')->first();
         User::factory()->create([
             'name' => 'Manager',
-            'email' => 'manager@example.com',
+            'email' => 'manager@smit.net',
             'password' => Hash::make('password'),
             'role_id' => $managerRole->id,
         ]);
@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
         $gebruikerRole = Role::where('slug', 'gebruiker')->first();
         User::factory()->create([
             'name' => 'Gebruiker',
-            'email' => 'gebruiker@example.com',
+            'email' => 'gebruiker@smit.net',
             'password' => Hash::make('password'),
             'role_id' => $gebruikerRole->id,
         ]);
@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
         $klantRole = Role::where('slug', 'klant')->first();
         User::factory()->create([
             'name' => 'Klant',
-            'email' => 'klant@example.com',
+            'email' => 'klant@smit.net',
             'password' => Hash::make('password'),
             'role_id' => $klantRole->id,
         ]);
