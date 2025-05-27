@@ -10,6 +10,9 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
+use Ysfkaya\FilamentPhoneInput\PhoneInputNumberType;
+use Ysfkaya\FilamentPhoneInput\Tables\PhoneColumn;
 
 class ClientResource extends Resource
 {
@@ -28,9 +31,8 @@ class ClientResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('phone_number')
-                    ->tel()
-                    ->maxLength(255),
+                PhoneInput::make('phone_number')
+                    ->defaultCountry('NL'),
                 Forms\Components\TextInput::make('address')
                     ->maxLength(255),
                 Forms\Components\Select::make('companies')
@@ -51,8 +53,9 @@ class ClientResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('phone_number')
-                    ->searchable(),
+                PhoneColumn::make('phone_number')
+                    ->displayFormat(PhoneInputNumberType::NATIONAL)
+                    ->countryColumn('phone_country'),
                 Tables\Columns\TextColumn::make('address')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('companies')
