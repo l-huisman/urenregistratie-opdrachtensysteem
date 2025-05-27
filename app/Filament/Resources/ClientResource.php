@@ -25,6 +25,7 @@ class ClientResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
+    // TODO: refactor for readability and maintainability
     public static function form(Form $form): Form
     {
         return $form
@@ -37,16 +38,22 @@ class ClientResource extends Resource
                                 name: 'user',
                                 titleAttribute: 'name',
                                 modifyQueryUsing: function (Builder $query, ?Client $record) {
-                                    $query->where(function (Builder $userQuery) use ($record) {
-                                        $userQuery->whereNotIn('id', function (\Illuminate\Database\Query\Builder $subQuery) {
-                                            $subQuery->select('user_id')
-                                                ->from('clients')
-                                                ->whereNotNull('user_id');
+                                    $query->whereHas('role', function (Builder $roleQuery) {
+                                        $roleQuery->where('name', 'klant');
+                                    })
+                                        ->where(function (Builder $userQuery) use ($record) {
+                                            $userQuery->whereNotIn('id', function (\Illuminate\Database\Query\Builder $subQuery) use ($record) {
+                                                $subQuery->select('user_id')
+                                                    ->from('clients')
+                                                    ->whereNotNull('user_id');
+                                                if ($record && $record->user_id) {
+                                                    $subQuery->where('user_id', '!=', $record->user_id);
+                                                }
+                                            });
+                                            if ($record && $record->user_id) {
+                                                $userQuery->orWhere('id', $record->user_id);
+                                            }
                                         });
-                                        if ($record && $record->user_id) {
-                                            $userQuery->orWhere('id', $record->user_id);
-                                        }
-                                    });
                                 }
                             )
                             ->label('User (Client)')
@@ -73,12 +80,11 @@ class ClientResource extends Resource
                                     ->dehydrated(fn($state) => filled($state))
                                     ->helperText('Create a password for the new user.'),
                                 Forms\Components\Select::make('role_id')
-                                    ->relationship('role', 'name')
-                                    ->options(Role::pluck('name', 'id'))
+                                    ->options(Role::where('name', 'klant')->pluck('name', 'id'))
                                     ->label('Role')
                                     ->required()
-                                    ->searchable()
-                                    ->preload(),
+                                    ->default(Role::where('name', 'klant')->first()?->id) // Pre-select 'klant' role
+                                    ->disabled(), // Optionally disable if only 'klant' is allowed
                             ])
                             ->createOptionAction(function (Forms\Components\Actions\Action $action) {
                                 return $action
@@ -115,7 +121,7 @@ class ClientResource extends Resource
                     ),
                 Forms\Components\Select::make('user_role_id_display')
                     ->label('User Role')
-                    ->options(Role::pluck('name', 'id'))
+                    ->options(Role::pluck('name', 'id')) // Keep all roles for display if needed, or filter to 'klant'
                     ->required(fn(Forms\Get $get) => filled($get('user_id')))
                     ->disabled(fn(Forms\Get $get) => !$get('user_id'))
                     ->searchable()

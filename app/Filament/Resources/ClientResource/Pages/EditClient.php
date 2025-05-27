@@ -30,7 +30,7 @@ class EditClient extends EditRecord
         if ($this->record->user) { // Ensure record and user relationship exist
             $data['user_name_display'] = $this->record->user->name;
             $data['user_email_display'] = $this->record->user->email;
-            $data['user_role_id_display'] = $this->record->user->role_id; // Populate role_id
+            $data['user_role_id_display'] = $this->record->user->role_id;
         }
         return $data;
     }
