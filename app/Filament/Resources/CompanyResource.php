@@ -37,8 +37,14 @@ class CompanyResource extends Resource
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('logo')
-                    ->maxLength(255), // TODO: Create a input for file upload
+                Forms\Components\FileUpload::make('logo')
+                    ->label('Logo')
+                    ->disk('public')
+                    ->directory('logos')
+                    ->nullable()
+                    ->image()
+                    ->imagePreviewHeight('128')
+                    ->dehydrated(fn($state) => filled($state)),
             ]);
     }
 
@@ -49,8 +55,13 @@ class CompanyResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('logo')
+                    ->disk('public')
                     ->height(32)
-                    ->width(32),
+                    ->width(32)
+                    ->extraAttributes(fn($record): array => [
+                        'alt' => $record->name,
+                        'class' => 'rounded-lg',
+                    ]),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('kvk_number')
@@ -61,8 +72,6 @@ class CompanyResource extends Resource
                     ->displayFormat(PhoneInputNumberType::NATIONAL)
                     ->countryColumn('phone_country'),
                 Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('logo')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

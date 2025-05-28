@@ -31,7 +31,7 @@ class CompanyFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'website' => $this->faker->optional()->url(),
             'kvk_number' => $this->faker->unique()->numerify('########'), // 8 digits KVK
-            'logo' => 'https://picsum.photos/seed/picsum/320/320'
+            'logo' => $this->faker->randomElement(['/logos/apple.png', '/logos/tesla.png', '/logos/firefox.png', '/logos/arch.png', null]),
         ];
     }
 }
