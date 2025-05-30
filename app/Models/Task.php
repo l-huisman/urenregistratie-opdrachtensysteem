@@ -21,12 +21,12 @@ class Task extends Model
         'estimated_hours',
     ];
 
-    protected function user(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    protected function phase(): BelongsTo
+    public function phase(): BelongsTo
     {
         return $this->belongsTo(Phase::class);
     }
