@@ -22,6 +22,7 @@ return new class extends Migration
             $table->decimal('estimated_hours', 8, 2)->default(0.00);
             // TODO: The question is whether that a task could have a price agreement itself.
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
