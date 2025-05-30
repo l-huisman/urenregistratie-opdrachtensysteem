@@ -1,6 +1,7 @@
 <?php
 
-use App\Models\Project;
+use App\Models\Phase;
+use App\Models\PriceAgreement;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,11 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('phases', function (Blueprint $table) {
+        Schema::create('phase_price_agreement', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Project::class)->constrained()->cascadeOnDelete();
-            $table->string('name');
-            $table->string('description')->nullable();
+            $table->foreignIdFor(Phase::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(PriceAgreement::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('phases');
+        Schema::dropIfExists('phase_price_agreement');
     }
 };
