@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Phase::class)->constrained()->cascadeOnDelete();
             $table->string('name');
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->decimal('estimated_hours', 8, 2)->default(0.00);
             // TODO: The question is whether that a task could have a price agreement itself.
             $table->timestamps();
