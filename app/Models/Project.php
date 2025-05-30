@@ -18,6 +18,7 @@ class Project extends Model
         'name',
         'description',
         'type',
+        'company_id',
     ];
 
     public function company(): BelongsTo
