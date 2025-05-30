@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignIdFor(Company::class)->constrained()->cascadeOnDelete();
             $table->string('name')->nullable(false);
-            $table->string('description')->nullable(false);
+            $table->text('description')->nullable(false);
             $table->enum('type', ['bundle', 'fixed'])->nullable(false)->default('bundle');
             $table->timestamps();
             $table->softDeletes();
