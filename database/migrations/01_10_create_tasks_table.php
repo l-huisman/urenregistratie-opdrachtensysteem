@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Phase;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Phase::class)->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('description')->nullable();
