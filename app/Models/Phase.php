@@ -15,7 +15,7 @@ class Phase extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'company_id',
+        'project_id',
         'name',
         'description',
     ];
