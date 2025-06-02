@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->string('email')->nullable();
             $table->string('logo')->nullable();
-            $table->foreignIdFor(PriceAgreement::class)->constrained()->cascadeOnDelete(); // Default price agreement for the company
             $table->timestamps();
             $table->softDeletes();
         });
