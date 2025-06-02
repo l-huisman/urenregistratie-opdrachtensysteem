@@ -2,7 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Enums\ProjectType;
+use App\Models\Project;
 use Illuminate\Database\Seeder;
 
 class ProjectSeeder extends Seeder
@@ -12,6 +13,13 @@ class ProjectSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Project::factory()->create(
+            [
+                'name' => 'Gripp Clone',
+                'description' => 'Een urenregistratie systeem waarin medewerkers hun uren kunnen registreren en klanten hun projecten kunnen beheren.',
+                'type' => ProjectType::BUNDLE,
+                'company_id' => 1,
+            ]
+        );
     }
 }
