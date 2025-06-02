@@ -35,8 +35,12 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
       - name: Copy .env.example to .env
-        run: cp .env.example .env
-        continue-on-error: true
+        run: |
+          if [ ! -f .env.example ]; then
+            echo ".env.example file is missing. Aborting."
+            exit 1
+          fi
+          cp .env.example .env
       - name: Generate application key
         run: php artisan key:generate
       - name: Configure database
