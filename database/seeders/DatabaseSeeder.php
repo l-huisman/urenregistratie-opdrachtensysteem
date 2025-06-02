@@ -17,9 +17,9 @@ class DatabaseSeeder extends Seeder
             CompanySeeder::class,
             ClientSeeder::class,
             PriceAgreementSeeder::class,
-            AssignmentSeeder::class,
-            AssignmentLineSeeder::class,
-            TimesheetSeeder::class,
+            ProjectSeeder::class,
+            PhaseSeeder::class,
+            TaskSeeder::class,
         ]);
     }
 }

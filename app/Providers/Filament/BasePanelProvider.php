@@ -40,7 +40,6 @@ class BasePanelProvider extends PanelProvider
                 UserResource::class,
                 ClientResource::class,
                 CompanyResource::class,
-                AssignmentResource::class,
             ])
             ->widgets([
                 Widgets\AccountWidget::class,

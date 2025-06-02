@@ -13,11 +13,10 @@ class PriceAgreement extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'company_id',
         'start_date',
         'end_date',
-        'price',
-        'rate',
+        'budgeted_hours',
+        'hourly_rate',
     ];
 
     public function company(): BelongsTo
