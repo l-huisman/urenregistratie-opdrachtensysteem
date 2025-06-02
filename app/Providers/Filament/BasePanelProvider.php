@@ -5,6 +5,9 @@ namespace App\Providers\Filament;
 use App\Filament\Resources\AssignmentResource;
 use App\Filament\Resources\ClientResource;
 use App\Filament\Resources\CompanyResource;
+use App\Filament\Resources\PhaseResource;
+use App\Filament\Resources\ProjectResource;
+use App\Filament\Resources\TaskResource;
 use App\Filament\Resources\UserResource;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -40,6 +43,9 @@ class BasePanelProvider extends PanelProvider
                 UserResource::class,
                 ClientResource::class,
                 CompanyResource::class,
+                ProjectResource::class,
+                PhaseResource::class,
+                TaskResource::class,
             ])
             ->widgets([
                 Widgets\AccountWidget::class,
