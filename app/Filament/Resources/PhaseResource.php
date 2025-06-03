@@ -34,7 +34,7 @@ class PhaseResource extends Resource
                         Forms\Components\Select::make('priceAgreements')
                             ->label('Price Agreements')
                             ->multiple()
-                            ->relationship('priceAgreements', 'id')
+                            ->relationship('priceAgreements', 'name')
                             ->createOptionForm(PriceAgreementFormHelper::getCreateOptionFormSchema())
                             ->createOptionUsing(PriceAgreementFormHelper::getCreateOptionUsing())
                             ->saveRelationshipsUsing(PriceAgreementFormHelper::getSaveRelationshipsUsing())
