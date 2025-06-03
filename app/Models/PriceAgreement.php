@@ -14,6 +14,7 @@ class PriceAgreement extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'name',
         'start_date',
         'end_date',
         'budgeted_hours',

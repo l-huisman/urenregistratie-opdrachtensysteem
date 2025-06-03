@@ -31,7 +31,7 @@ class CompanyResource extends Resource
                 Forms\Components\TextInput::make('website')
                     ->maxLength(255),
                 Forms\Components\Textarea::make('address')
-                    ->columnSpanFull(), // TODO: Use a custom component and logic
+                    ->columnSpanFull(), // TODO: Use a helper component and logic
                 PhoneInput::make('phone_number')
                     ->defaultCountry('NL'),
                 Forms\Components\TextInput::make('email')
