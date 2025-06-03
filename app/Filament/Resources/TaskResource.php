@@ -21,36 +21,49 @@ class TaskResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name'),
+                    ->relationship('user', 'name')
+                    ->prefixIcon('heroicon-o-user')
+                    ->label('User'),
                 Forms\Components\Select::make('phase_id')
                     ->relationship('phase', 'name')
                     ->required()
                     ->searchable()
                     ->preload()
+                    ->prefixIcon('heroicon-o-clipboard-document-list')
+                    ->label('Phase')
                     ->createOptionForm([
                         Forms\Components\Select::make('project_id')
                             ->relationship('project', 'name')
                             ->required()
                             ->searchable()
                             ->preload()
+                            ->prefixIcon('heroicon-o-briefcase')
                             ->label('Project'),
                         Forms\Components\TextInput::make('name')
                             ->required()
                             ->maxLength(255)
+                            ->prefixIcon('heroicon-o-identification')
                             ->label('Phase Name'),
                         Forms\Components\Textarea::make('description')
                             ->columnSpanFull()
+                            // Textarea does not have a prefixIcon, consider if a label icon is sufficient or if a custom view is needed.
                             ->label('Phase Description'),
                     ]),
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->prefixIcon('heroicon-o-identification')
+                    ->label('Task Name'),
                 Forms\Components\Textarea::make('description')
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    // Textarea does not have a prefixIcon
+                    ->label('Task Description'),
                 Forms\Components\TextInput::make('estimated_hours')
                     ->required()
                     ->numeric()
-                    ->default(0.00),
+                    ->default(0.00)
+                    ->prefixIcon('heroicon-o-clock')
+                    ->label('Task Estimated Hours'),
             ]);
     }
 
