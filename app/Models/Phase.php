@@ -27,6 +27,6 @@ class Phase extends Model
 
     public function priceAgreements(): BelongsToMany
     {
-        return $this->belongsToMany(PriceAgreement::class);
+        return $this->belongsToMany(PriceAgreement::class, table: 'company_phase_price_agreement');
     }
 }
