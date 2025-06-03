@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TaskResource\Pages;
-use App\Filament\Resources\TaskResource\RelationManagers;
 use App\Models\Task;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -69,7 +68,8 @@ class TaskResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('estimated_hours')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->icon('heroicon-o-clock'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

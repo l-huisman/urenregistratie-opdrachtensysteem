@@ -51,6 +51,19 @@ class PhaseResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('description')
+                    ->limit(50)
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('priceAgreements.name')
+                    ->label('Agreement')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('priceAgreements.hourly_rate')
+                    ->label('Hourly Rate')
+                    ->icon('heroicon-o-currency-euro'),
+                Tables\Columns\TextColumn::make('priceAgreements.budgeted_hours')
+                    ->label('Budgeted Hours')
+                    ->icon('heroicon-o-clock'),
+                // TODO: Add a column with remaining hours
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
