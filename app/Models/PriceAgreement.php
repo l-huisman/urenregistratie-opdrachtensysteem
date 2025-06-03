@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
+use Database\Factories\PriceAgreementFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 class PriceAgreement extends Model
 {
-    /** @use HasFactory<\Database\Factories\PriceAgreementFactory> */
+    /** @use HasFactory<PriceAgreementFactory> */
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
@@ -19,8 +20,13 @@ class PriceAgreement extends Model
         'hourly_rate',
     ];
 
-    public function company(): BelongsTo
+    public function companies(): BelongsToMany
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsToMany(Company::class);
+    }
+
+    public function phases(): BelongsToMany
+    {
+        return $this->belongsToMany(Phase::class);
     }
 }
