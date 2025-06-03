@@ -11,11 +11,11 @@
         {
             Schema::create('price_agreements', function (Blueprint $table) {
                 $table->id();
-                $table->string('name');
-                $table->date('start_date');
-                $table->date('end_date')->nullable();
-                $table->decimal('budgeted_hours');
-                $table->decimal('hourly_rate');
+                $table->string('name')->nullable(false);
+                $table->date('start_date')->nullable(false);
+                $table->date('end_date')->nullable(true);
+                $table->decimal('budgeted_hours')->nullable(false);;
+                $table->decimal('hourly_rate')->nullable(false);;
                 $table->timestamps();
                 $table->softDeletes();
             });
