@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class PhaseResource extends Resource
 {
@@ -31,15 +32,11 @@ class PhaseResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\Section::make('Price Agreements')
                     ->schema([
-                        // TODO: Show the default price agreements associated with the company and allow the user to accept this for the phase
                         Forms\Components\Select::make('priceAgreements')
+                            ->label('Price Agreements')
                             ->multiple()
-                            ->relationship('priceAgreements', 'name')
+                            ->relationship('priceAgreements', 'id') // 'id' or another title attribute from PriceAgreement
                             ->createOptionForm([
-                                Forms\Components\Select::make('company_to_associate')
-                                    ->relationship('companies', 'name')
-                                    ->label('Company')
-                                    ->required(),
                                 Forms\Components\DatePicker::make('start_date')
                                     ->default(now())
                                     ->required(),
@@ -51,6 +48,44 @@ class PhaseResource extends Resource
                                     ->required(),
                                 Forms\Components\DatePicker::make('end_date'),
                             ])
+                            ->createOptionUsing(function (array $data): int {
+                                // Create the PriceAgreement instance
+                                $priceAgreement = PriceAgreement::create($data);
+                                // Return its ID
+                                return $priceAgreement->id;
+                            })
+                            ->saveRelationshipsUsing(function (Forms\Components\Select $component, Model $record, array $state) {
+                                /** @var \App\Models\Phase $phase */
+                                $phase = $record; // $record is the Phase model instance
+
+                                // $state is an array of PriceAgreement IDs (selected or newly created)
+
+                                if (!$phase->project) {
+                                    // If Phase has no project, we cannot determine the company.
+                                    // Sync without company_id or handle as an error.
+                                    // This example will sync without company_id if project is missing.
+                                    $phase->priceAgreements()->sync($state);
+                                    return;
+                                }
+
+                                $project = $phase->project;
+
+                                if (!$project->company) {
+                                    // If Project has no company, we cannot determine the company_id.
+                                    // Sync without company_id or handle as an error.
+                                    $phase->priceAgreements()->sync($state);
+                                    return;
+                                }
+
+                                $companyId = $project->company->id;
+
+                                // Prepare data for sync, including the company_id for the pivot table
+                                $syncData = collect($state)
+                                    ->mapWithKeys(fn($priceAgreementId) => [$priceAgreementId => ['company_id' => $companyId]])
+                                    ->all();
+
+                                $phase->priceAgreements()->sync($syncData);
+                            })
                     ]),
             ]);
     }

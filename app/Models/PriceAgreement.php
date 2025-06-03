@@ -22,11 +22,11 @@ class PriceAgreement extends Model
 
     public function companies(): BelongsToMany
     {
-        return $this->belongsToMany(Company::class);
+        return $this->belongsToMany(Company::class, 'company_phase_price_agreement');
     }
 
     public function phases(): BelongsToMany
     {
-        return $this->belongsToMany(Phase::class);
+        return $this->belongsToMany(Phase::class, 'company_phase_price_agreement');
     }
 }
