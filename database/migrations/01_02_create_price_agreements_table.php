@@ -11,6 +11,7 @@
         {
             Schema::create('price_agreements', function (Blueprint $table) {
                 $table->id();
+                $table->string('name');
                 $table->date('start_date');
                 $table->date('end_date')->nullable();
                 $table->decimal('budgeted_hours');
