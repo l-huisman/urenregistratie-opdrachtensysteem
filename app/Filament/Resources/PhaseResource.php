@@ -3,14 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PhaseResource\Pages;
+use App\Filament\Support\PriceAgreementFormHelper;
 use App\Models\Phase;
-use App\Models\PriceAgreement;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
 
 class PhaseResource extends Resource
 {
@@ -35,57 +34,10 @@ class PhaseResource extends Resource
                         Forms\Components\Select::make('priceAgreements')
                             ->label('Price Agreements')
                             ->multiple()
-                            ->relationship('priceAgreements', 'id') // 'id' or another title attribute from PriceAgreement
-                            ->createOptionForm([
-                                Forms\Components\DatePicker::make('start_date')
-                                    ->default(now())
-                                    ->required(),
-                                Forms\Components\TextInput::make('budgeted_hours')
-                                    ->numeric()
-                                    ->required(),
-                                Forms\Components\TextInput::make('hourly_rate')
-                                    ->numeric()
-                                    ->required(),
-                                Forms\Components\DatePicker::make('end_date'),
-                            ])
-                            ->createOptionUsing(function (array $data): int {
-                                // Create the PriceAgreement instance
-                                $priceAgreement = PriceAgreement::create($data);
-                                // Return its ID
-                                return $priceAgreement->id;
-                            })
-                            ->saveRelationshipsUsing(function (Forms\Components\Select $component, Model $record, array $state) {
-                                /** @var \App\Models\Phase $phase */
-                                $phase = $record; // $record is the Phase model instance
-
-                                // $state is an array of PriceAgreement IDs (selected or newly created)
-
-                                if (!$phase->project) {
-                                    // If Phase has no project, we cannot determine the company.
-                                    // Sync without company_id or handle as an error.
-                                    // This example will sync without company_id if project is missing.
-                                    $phase->priceAgreements()->sync($state);
-                                    return;
-                                }
-
-                                $project = $phase->project;
-
-                                if (!$project->company) {
-                                    // If Project has no company, we cannot determine the company_id.
-                                    // Sync without company_id or handle as an error.
-                                    $phase->priceAgreements()->sync($state);
-                                    return;
-                                }
-
-                                $companyId = $project->company->id;
-
-                                // Prepare data for sync, including the company_id for the pivot table
-                                $syncData = collect($state)
-                                    ->mapWithKeys(fn($priceAgreementId) => [$priceAgreementId => ['company_id' => $companyId]])
-                                    ->all();
-
-                                $phase->priceAgreements()->sync($syncData);
-                            })
+                            ->relationship('priceAgreements', 'id')
+                            ->createOptionForm(PriceAgreementFormHelper::getCreateOptionFormSchema())
+                            ->createOptionUsing(PriceAgreementFormHelper::getCreateOptionUsing())
+                            ->saveRelationshipsUsing(PriceAgreementFormHelper::getSaveRelationshipsUsing())
                     ]),
             ]);
     }
