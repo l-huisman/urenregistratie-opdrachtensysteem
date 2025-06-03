@@ -3,8 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PhaseResource\Pages;
-use App\Filament\Resources\PhaseResource\RelationManagers;
 use App\Models\Phase;
+use App\Models\PriceAgreement;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -33,7 +33,36 @@ class PhaseResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('priceAgreements')
                             ->multiple()
-                            ->relationship('priceAgreements', 'name'),
+                            ->relationship('priceAgreements', 'name')
+                            ->createOptionForm([
+                                Forms\Components\Select::make('company_to_associate')
+                                    ->relationship('companies', 'name')
+                                    ->label('Company')
+                                    ->required(),
+                                Forms\Components\DatePicker::make('start_date')
+                                    ->default(now())
+                                    ->required(),
+                                Forms\Components\TextInput::make('budgeted_hours')
+                                    ->numeric()
+                                    ->required(),
+                                Forms\Components\TextInput::make('hourly_rate')
+                                    ->numeric()
+                                    ->required(),
+                                Forms\Components\DatePicker::make('end_date'),
+                            ])
+                            ->createOptionUsing(function (array $data): PriceAgreement {
+                                $companyIdToAssociate = $data['company_to_associate'];
+                                unset($data['company_to_associate']);
+
+                                $priceAgreement = PriceAgreement::create($data);
+
+                                if ($companyIdToAssociate) {
+                                    $priceAgreement->companies()->attach($companyIdToAssociate);
+                                }
+
+                                return $priceAgreement;
+                            })
+                            ->createOptionModalHeading('Create New Price Agreement'),
                     ]),
             ]);
     }

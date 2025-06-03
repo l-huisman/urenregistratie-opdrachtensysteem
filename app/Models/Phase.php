@@ -6,7 +6,7 @@ use Database\Factories\PhaseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Phase extends Model
@@ -25,8 +25,8 @@ class Phase extends Model
         return $this->belongsTo(Project::class);
     }
 
-    public function priceAgreements(): HasMany
+    public function priceAgreements(): BelongsToMany
     {
-        return $this->hasMany(PriceAgreement::class);
+        return $this->belongsToMany(PriceAgreement::class);
     }
 }
