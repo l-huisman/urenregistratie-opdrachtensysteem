@@ -44,6 +44,10 @@ class ProjectResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('company.logo')
+                    ->label('')
+                    ->size(32)
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('company.name')
                     ->numeric()
                     ->sortable(),
