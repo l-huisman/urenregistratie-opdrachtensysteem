@@ -29,9 +29,9 @@ class Company extends Model
         return $this->belongsToMany(Client::class);
     }
 
-    public function priceAgreements(): HasMany
+    public function priceAgreements(): BelongsToMany
     {
-        return $this->hasMany(PriceAgreement::class);
+        return $this->belongsToMany(PriceAgreement::class, table: 'company_phase_price_agreement');
     }
 
     public function projects(): HasMany

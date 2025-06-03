@@ -31,6 +31,7 @@ class PhaseResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\Section::make('Price Agreements')
                     ->schema([
+                        // TODO: Show the default price agreements associated with the company and allow the user to accept this for the phase
                         Forms\Components\Select::make('priceAgreements')
                             ->multiple()
                             ->relationship('priceAgreements', 'name')
@@ -50,19 +51,6 @@ class PhaseResource extends Resource
                                     ->required(),
                                 Forms\Components\DatePicker::make('end_date'),
                             ])
-                            ->createOptionUsing(function (array $data): PriceAgreement {
-                                $companyIdToAssociate = $data['company_to_associate'];
-                                unset($data['company_to_associate']);
-
-                                $priceAgreement = PriceAgreement::create($data);
-
-                                if ($companyIdToAssociate) {
-                                    $priceAgreement->companies()->attach($companyIdToAssociate);
-                                }
-
-                                return $priceAgreement;
-                            })
-                            ->createOptionModalHeading('Create New Price Agreement'),
                     ]),
             ]);
     }
