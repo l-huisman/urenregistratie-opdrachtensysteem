@@ -1,24 +1,11 @@
 <?php
 
-namespace App\Policies;
+namespace App\Policies\Concerns;
 
 use App\Models\User;
-use App\Policies\Concerns\ChecksOwner;
-use App\Policies\Concerns\ChecksRoles;
 
-class BasePolicy
+trait ChecksRoles
 {
-    use ChecksRoles;
-    use ChecksOwner;
-
-    /**
-     * Create a new policy instance.
-     */
-    public function __construct()
-    {
-        //
-    }
-
     protected function isAdministrator(User $user): bool
     {
         return $user->role->slug === 'administrator';
@@ -27,12 +14,6 @@ class BasePolicy
     protected function isManager(User $user): bool
     {
         return $user->role->slug === 'manager';
-
-    }
-
-    protected function isSelf(User $user, User $model): bool
-    {
-        return $user->id === $model->id;
     }
 
     protected function isAdministratorOrManager(User $user): bool
