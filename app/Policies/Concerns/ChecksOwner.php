@@ -2,7 +2,7 @@
 
 namespace App\Policies\Concerns;
 
-trait CheckOwner
+trait ChecksOwner
 {
 
 }
