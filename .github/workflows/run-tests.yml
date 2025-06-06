@@ -13,10 +13,8 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD || 'root' }}
-          MYSQL_DATABASE: ${{ secrets.DB_DATABASE || 'urenregistratie_opdrachtensysteem' }}
-          MYSQL_USER: ${{ secrets.DB_USERNAME || 'root' }}
-          MYSQL_PASSWORD: ${{ secrets.DB_PASSWORD || '' }}
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: test_db
         ports:
           - 3306:3306
         options: >-
@@ -33,17 +31,10 @@ jobs:
         run: composer install --prefer-dist --no-interaction --no-progress
       - name: Copy .env
         run: cp .env.example .env || true
-      - name: Set up Laravel environment variables
-        run: |
-          sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
-          sed -i 's/DB_PORT=.*/DB_PORT=3306/' .env
-          sed -i 's/DB_DATABASE=.*/DB_DATABASE=urenregistratie_opdrachtensysteem/' .env
-          sed -i 's/DB_USERNAME=.*/DB_USERNAME=root/' .env
-          sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=/' .env
       - name: Generate application key
         run: php artisan key:generate
       - name: Set up database
         run: |
-          php artisan migrate:fresh --seed
+          php artisan migrate
       - name: Run tests
         run: php artisan test
