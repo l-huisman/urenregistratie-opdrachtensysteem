@@ -4,30 +4,45 @@ namespace App\Policies;
 
 use App\Models\Client;
 use App\Models\User;
+use App\Policies\Concerns\ChecksRoles;
+use App\Policies\Concerns\ChecksSelf;
 
-class ClientPolicy extends BasePolicy
+class ClientPolicy
 {
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param User $user
-     * @param Client $model
-     * @return bool
-     */
-    public function view(User $user, $model): bool
+    use ChecksRoles, ChecksSelf;
+
+    public function viewAny(User $user): bool
     {
-        return true; // TODO refactor this to use inheritance on the Client model from User model
+        return $this->isAdministratorOrManager($user);
     }
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param User $user
-     * @param Client $model
-     * @return bool
-     */
-    public function update(User $user, $model): bool
+    public function view(User $user, Client $client): bool
     {
-        return $this->isAdminOrManager($user); // TODO also add check for self for client when inheritance is implemented
+        return $this->isAdministratorOrManager($user) || $this->isClientSelf($user, $client);
+    }
+
+    public function create(User $user): bool
+    {
+        return $this->isAdministratorOrManager($user);
+    }
+
+    public function update(User $user, Client $client): bool
+    {
+        return $this->isAdministratorOrManager($user) || $this->isClientSelf($user, $client);
+    }
+
+    public function delete(User $user, Client $client): bool
+    {
+        return $this->isAdministrator($user);
+    }
+
+    public function restore(User $user, Client $client): bool
+    {
+        return $this->isAdministrator($user);
+    }
+
+    public function forceDelete(User $user, Client $client): bool
+    {
+        return false; // Not allowed by default
     }
 }
