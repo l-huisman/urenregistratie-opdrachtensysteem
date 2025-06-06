@@ -30,17 +30,17 @@ class UserSeeder extends Seeder
             'role_id' => $managerRole->id,
         ]);
 
-        $gebruikerRole = Role::where('slug', 'gebruiker')->first();
+        $gebruikerRole = Role::where('slug', 'user')->first();
         User::factory()->create([
-            'name' => 'Gebruiker',
+            'name' => 'user',
             'email' => 'gebruiker@smit.net',
             'password' => Hash::make('password'),
             'role_id' => $gebruikerRole->id,
         ]);
 
-        $klantRole = Role::where('slug', 'klant')->first();
+        $klantRole = Role::where('slug', 'client')->first();
         User::factory()->create([
-            'name' => 'Klant',
+            'name' => 'client',
             'email' => 'klant@smit.net',
             'password' => Hash::make('password'),
             'role_id' => $klantRole->id,
