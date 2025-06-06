@@ -39,7 +39,7 @@ class ClientResource extends Resource
                                 titleAttribute: 'name',
                                 modifyQueryUsing: function (Builder $query, ?Client $record) {
                                     $query->whereHas('role', function (Builder $roleQuery) {
-                                        $roleQuery->where('name', 'klant');
+                                        $roleQuery->where('name', 'client');
                                     })
                                         ->where(function (Builder $userQuery) use ($record) {
                                             $userQuery->whereNotIn('id', function (\Illuminate\Database\Query\Builder $subQuery) use ($record) {
@@ -80,10 +80,10 @@ class ClientResource extends Resource
                                     ->dehydrated(fn($state) => filled($state))
                                     ->helperText('Create a password for the new user.'),
                                 Forms\Components\Select::make('role_id')
-                                    ->options(Role::where('name', 'klant')->pluck('name', 'id'))
+                                    ->options(Role::where('name', 'client')->pluck('name', 'id'))
                                     ->label('Role')
                                     ->required()
-                                    ->default(Role::where('name', 'klant')->first()?->id)
+                                    ->default(Role::where('name', 'client')->first()?->id)
                             ])
                             ->createOptionAction(function (Forms\Components\Actions\Action $action) {
                                 return $action
