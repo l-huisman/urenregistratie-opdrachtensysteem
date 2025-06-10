@@ -6,29 +6,31 @@ use App\Models\Client;
 use App\Models\User;
 use App\Policies\Concerns\ChecksRoles;
 use App\Policies\Concerns\ChecksSelf;
+use Illuminate\Auth\Access\Response;
 
 class ClientPolicy
 {
     use ChecksRoles, ChecksSelf;
 
+
     public function viewAny(User $user): bool
     {
-        return $this->isAdministratorOrManager($user);
+        return $this->isAdministrator($user);
     }
 
     public function view(User $user, Client $client): bool
     {
-        return $this->isAdministratorOrManager($user) || $this->isClientSelf($user, $client);
+        return $this->isAdministrator($user) || $this->isClientSelf($user, $client);
     }
 
     public function create(User $user): bool
     {
-        return $this->isAdministratorOrManager($user);
+        return $this->isAdministrator($user);
     }
 
     public function update(User $user, Client $client): bool
     {
-        return $this->isAdministratorOrManager($user) || $this->isClientSelf($user, $client);
+        return $this->isAdministrator($user) || $this->isClientSelf($user, $client);
     }
 
     public function delete(User $user, Client $client): bool

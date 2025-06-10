@@ -22,14 +22,6 @@ class UserSeeder extends Seeder
             'role_id' => $adminRole->id,
         ]);
 
-        $managerRole = Role::where('slug', 'manager')->first();
-        User::factory()->create([
-            'name' => 'Manager',
-            'email' => 'manager@smit.net',
-            'password' => Hash::make('password'),
-            'role_id' => $managerRole->id,
-        ]);
-
         $gebruikerRole = Role::where('slug', 'user')->first();
         User::factory()->create([
             'name' => 'user',
