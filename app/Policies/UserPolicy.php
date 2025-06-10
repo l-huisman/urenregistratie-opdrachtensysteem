@@ -15,7 +15,7 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $this->isAdministratorOrManager($user);
+        return $this->isAdministrator($user);
     }
 
     /**
@@ -23,7 +23,7 @@ class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        return $this->isAdministratorOrManager($user) || $this->isSelf($user, $model);
+        return $this->isAdministrator($user) || $user->is($model);
     }
 
     /**
@@ -31,7 +31,7 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $this->isAdministratorOrManager($user);
+        return $this->isAdministrator($user);
     }
 
     /**
@@ -39,7 +39,7 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        return $this->isAdministratorOrManager($user) || $this->isSelf($user, $model);
+        return $this->isAdministrator($user) || $user->is($model);
     }
 
     /**
@@ -47,7 +47,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        return $this->isAdministratorOrManager($user);
+        return $this->isAdministrator($user);
     }
 
     /**

@@ -2,10 +2,17 @@
 
 namespace Tests\Unit\Policies;
 
+use App\Filament\Resources\CompanyResource\Pages\EditCompany;
 use App\Models\Client;
 use App\Models\Company;
 use App\Models\User;
+use Database\Factories\ClientFactory;
+use Database\Factories\CompanyFactory;
+use Database\Factories\UserFactory;
+use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class CompanyPolicyTest extends TestCase
@@ -14,7 +21,7 @@ class CompanyPolicyTest extends TestCase
 
     protected User $administrator;
     protected User $manager;
-    protected User $gebruiker;
+    protected User $user;
     protected Company $company;
     protected Company $otherCompany;
     protected Client $client;
@@ -22,10 +29,12 @@ class CompanyPolicyTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->artisan('migrate:fresh', ['--seed' => true]);
+
+        $this->seed(DatabaseSeeder::class);
+//        $this->artisan('migrate:fresh', ['--seed' => true]);
         $this->administrator = User::factory()->create(['role_id' => 4]);
         $this->manager = User::factory()->create(['role_id' => 3]);
-        $this->gebruiker = User::factory()->create(['role_id' => 2]);
+        $this->user = User::factory()->create(['role_id' => 2]);
         $clientUser = User::factory()->create(['role_id' => 1]);
         $this->client = Client::factory()->create(['user_id' => $clientUser->id]);
         $this->company = Company::factory()->create();
@@ -33,6 +42,25 @@ class CompanyPolicyTest extends TestCase
 
         $this->company->clients()->attach($this->client->id);
     }
+
+    #[Test]
+    public function clients_can_only_edit_their_own_companies()
+    {
+        $user = UserFactory::new()->client()->create();
+
+        $ownCompany = CompanyFactory::new()->hasAttached($user->client, relationship: 'clients')->create();
+        $otherCompany = CompanyFactory::new()->create();
+
+        $this->actingAs($user);
+
+        $this->get(EditCompany::getUrl(['record' => $ownCompany]))->assertOk();
+
+        $this->get(EditCompany::getUrl(['record' => $otherCompany]))->assertForbidden();
+
+//        Livewire::actingAs($user);
+//        Livewire::test(EditCompany::class, [$ownCompany])->assertOk();
+    }
+
 
 
     public function test_administrator_can_view_any_company(): void
@@ -105,39 +133,41 @@ class CompanyPolicyTest extends TestCase
         $this->assertFalse($this->manager->can('forceDelete', $this->company));
     }
 
-    public function test_gebruiker_cannot_view_any_company(): void
+    public function test_user_cannot_view_any_company(): void
     {
-        $this->assertFalse($this->gebruiker->can('viewAny', Company::class));
+
+
+        $this->assertFalse($this->user->can('viewAny', Company::class));
     }
 
-    public function test_gebruiker_cannot_view_company(): void
+    public function test_user_cannot_view_company(): void
     {
-        $this->assertFalse($this->gebruiker->can('view', $this->company));
+        $this->assertFalse($this->user->can('view', $this->company));
     }
 
-    public function test_gebruiker_cannot_create_company(): void
+    public function test_user_cannot_create_company(): void
     {
-        $this->assertFalse($this->gebruiker->can('create', Company::class));
+        $this->assertFalse($this->user->can('create', Company::class));
     }
 
-    public function test_gebruiker_cannot_update_company(): void
+    public function test_user_cannot_update_company(): void
     {
-        $this->assertFalse($this->gebruiker->can('update', $this->company));
+        $this->assertFalse($this->user->can('update', $this->company));
     }
 
-    public function test_gebruiker_cannot_delete_company(): void
+    public function test_user_cannot_delete_company(): void
     {
-        $this->assertFalse($this->gebruiker->can('delete', $this->company));
+        $this->assertFalse($this->user->can('delete', $this->company));
     }
 
-    public function test_gebruiker_cannot_restore_company(): void
+    public function test_user_cannot_restore_company(): void
     {
-        $this->assertFalse($this->gebruiker->can('restore', $this->company));
+        $this->assertFalse($this->user->can('restore', $this->company));
     }
 
-    public function test_gebruiker_cannot_force_delete_company(): void
+    public function test_user_cannot_force_delete_company(): void
     {
-        $this->assertFalse($this->gebruiker->can('forceDelete', $this->company));
+        $this->assertFalse($this->user->can('forceDelete', $this->company));
     }
 
     public function test_client_cannot_view_any_company(): void
@@ -182,6 +212,12 @@ class CompanyPolicyTest extends TestCase
 
     public function test_client_cannot_update_other_company(): void
     {
+        // given a user does not belong to a company
+
+
+        // when the user updates the company
+        // then the update is rejected
+
         $this->assertFalse($this->client->user->can('update', $this->otherCompany));
     }
 
