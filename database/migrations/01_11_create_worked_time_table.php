@@ -23,7 +23,7 @@ return new class extends Migration {
             $table->text('description');
             $table->decimal('worked_hours', 8, 2);
             $table->boolean('billable')->default(true);
-            $table->date('date')->default(now());
+            $table->date('date')->useCurrent();
             $table->timestamps();
             $table->softDeletes();
         });
