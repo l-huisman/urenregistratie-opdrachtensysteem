@@ -6,18 +6,30 @@ use App\Filament\Resources\WorkedTimeResource;
 use App\Models\WorkedTime;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
 class ListWorkedTimes extends ListRecords
 {
     protected static string $resource = WorkedTimeResource::class;
 
+    protected function getHeaderActions(): array
+    {
+        return [
+            \Filament\Actions\Action::make('overview')
+                ->label('Overview')
+                ->icon('heroicon-m-chart-bar')
+                ->url(fn () => WorkedTimeResource::getUrl('overview')),
+        ];
+    }
+
     public function getTabs(): array
     {
         return [
             'all' => Tab::make('All'),
+            'overview' => Tab::make('Overview')
+                ->icon('heroicon-m-chart-bar')
+                ->badge(WorkedTime::query()->count())
+                ->badgeColor('primary'),
             'billable' => Tab::make('Billable')
                 ->modifyQueryUsing(fn(Builder $query) => $query->where('billable', true))
                 ->icon('heroicon-m-currency-euro')
