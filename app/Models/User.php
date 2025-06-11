@@ -53,11 +53,6 @@ class User extends Authenticatable implements FilamentUser
         ];
     }
 
-    public function timesheets(): HasMany
-    {
-        return $this->hasMany(Timesheet::class);
-    }
-
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
@@ -66,6 +61,11 @@ class User extends Authenticatable implements FilamentUser
     public function client(): HasOne
     {
         return $this->hasOne(Client::class);
+    }
+
+    public function workedTimes(): HasMany
+    {
+        return $this->hasMany(WorkedTime::class);
     }
 
     public function canAccessPanel(Panel $panel): bool
