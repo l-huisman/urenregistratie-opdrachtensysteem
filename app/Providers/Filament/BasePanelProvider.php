@@ -2,13 +2,13 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Resources\AssignmentResource;
 use App\Filament\Resources\ClientResource;
 use App\Filament\Resources\CompanyResource;
 use App\Filament\Resources\PhaseResource;
 use App\Filament\Resources\ProjectResource;
 use App\Filament\Resources\TaskResource;
 use App\Filament\Resources\UserResource;
+use App\Filament\Resources\WorkedTimeResource;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -46,6 +46,7 @@ class BasePanelProvider extends PanelProvider
                 ProjectResource::class,
                 PhaseResource::class,
                 TaskResource::class,
+                WorkedTimeResource::class,
             ])
             ->widgets([
                 Widgets\AccountWidget::class,
