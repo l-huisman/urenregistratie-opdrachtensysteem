@@ -3,8 +3,10 @@
 namespace App\Filament\Resources\WorkedTimeResource\Pages;
 
 use App\Filament\Resources\WorkedTimeResource;
+use App\Models\User;
 use App\Models\WorkedTime;
 use Filament\Resources\Pages\Page;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables;
 use Illuminate\Http\Request;
@@ -30,7 +32,7 @@ class OverviewWorkedTime extends Page implements HasTable
         $startOfWeek = Carbon::now()->addWeeks($this->weekOffset)->subWeek()->startOfWeek();
         $endOfWeek = Carbon::now()->addWeeks($this->weekOffset)->subWeek()->endOfWeek();
 
-        return \App\Models\User::whereHas('workedTimes', function ($query) use ($startOfWeek, $endOfWeek) {
+        return User::whereHas('workedTimes', function ($query) use ($startOfWeek, $endOfWeek) {
             $query->whereBetween('date', [$startOfWeek, $endOfWeek]);
         });
     }
@@ -43,11 +45,11 @@ class OverviewWorkedTime extends Page implements HasTable
             ->map(fn($i) => $startOfWeek->copy()->addDays($i)->format('l'));
 
         $columns = [
-            Tables\Columns\TextColumn::make('name')->label('User'),
+            TextColumn::make('name')->label('User'),
         ];
 
         foreach ($weekdays as $weekday) {
-            $columns[] = Tables\Columns\TextColumn::make('worked_hours_' . $weekday)
+            $columns[] = TextColumn::make('worked_hours_' . $weekday)
                 ->label($weekday)
                 ->getStateUsing(function ($record) use ($weekday, $startOfWeek, $endOfWeek) {
                     $workedTimes = WorkedTime::query()
