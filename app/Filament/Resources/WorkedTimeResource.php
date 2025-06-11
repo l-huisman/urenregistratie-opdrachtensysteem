@@ -50,21 +50,26 @@ class WorkedTimeResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('project.name')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('phase.name')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                ->searchable(),
                 Tables\Columns\TextColumn::make('task.name')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('worked_hours')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('billable')
-                    ->boolean(),
+                    ->boolean()
+                ->sortable(),
                 Tables\Columns\TextColumn::make('date')
                     ->date()
                     ->sortable(),
@@ -81,9 +86,6 @@ class WorkedTimeResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-//                Tables\Filters\TrashedFilter::make(),
-            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
@@ -96,27 +98,13 @@ class WorkedTimeResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListWorkedTimes::route('/'),
             'create' => Pages\CreateWorkedTime::route('/create'),
             'edit' => Pages\EditWorkedTime::route('/{record}/edit'),
+            'overview' => Pages\OverviewWorkedTime::route('/overview'),
         ];
     }
-
-//    public static function getEloquentQuery(): Builder
-//    {
-//        return parent::getEloquentQuery()
-//            ->withoutGlobalScopes([
-//                SoftDeletingScope::class,
-//            ]);
-//    }
 }

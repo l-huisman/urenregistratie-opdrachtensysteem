@@ -29,7 +29,10 @@ class WorkedTimeFactory extends Factory
             'description' => $this->faker->sentence,
             'worked_hours' => $this->faker->randomElement(range(0.25, 16, 0.25)),
             'billable' => $this->faker->boolean,
-            'date' => $this->faker->date(),
+            'date' => $this->faker->dateTimeBetween(
+                now()->subMonth()->startOfMonth(),
+                now()
+            )->format('Y-m-d'),
         ];
     }
 }
