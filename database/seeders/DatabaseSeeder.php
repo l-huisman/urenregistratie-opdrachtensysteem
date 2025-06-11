@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             ProjectSeeder::class,
             PhaseSeeder::class,
             TaskSeeder::class,
+            WorkedTimeSeeder::class,
         ]);
     }
 }
