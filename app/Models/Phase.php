@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Phase extends Model
@@ -30,5 +31,10 @@ class Phase extends Model
         return $this->belongsToMany(PriceAgreement::class, table: 'company_phase_price_agreement')
             ->withPivot('company_id')
             ->withTimestamps();
+    }
+
+    public function workedTimes(): HasMany
+    {
+        return $this->hasMany(WorkedTime::class);
     }
 }
