@@ -21,7 +21,7 @@ class OverviewWorkedTime extends Page implements HasTable
 
     public $startOfWeek;
     public $endOfWeek;
-
+  
     public int $weekOffset = 0;
 
     public function mount(Request $request): void
@@ -56,7 +56,6 @@ class OverviewWorkedTime extends Page implements HasTable
         foreach ($weekdays as $weekday) {
             $columns[] = TextColumn::make('worked_hours_' . $weekday)
                 ->label($weekday)
-                // In getTableColumns(), inside getStateUsing:
                 ->getStateUsing(function ($record) use ($weekday) {
                     $hours = $record->workedTimes
                         ->filter(function ($item) use ($weekday) {
