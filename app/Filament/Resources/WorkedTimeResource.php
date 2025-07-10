@@ -49,19 +49,15 @@ class WorkedTimeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
-                    ->numeric()
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('project.name')
-                    ->numeric()
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phase.name')
-                    ->numeric()
                     ->sortable()
                 ->searchable(),
                 Tables\Columns\TextColumn::make('task.name')
-                    ->numeric()
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('worked_hours')
