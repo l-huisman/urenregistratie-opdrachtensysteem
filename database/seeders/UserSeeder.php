@@ -18,23 +18,23 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@smit.net',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('secret'),
             'role_id' => $adminRole->id,
         ]);
 
         $gebruikerRole = Role::where('slug', 'user')->first();
         User::factory()->create([
-            'name' => 'user',
+            'name' => 'User',
             'email' => 'gebruiker@smit.net',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('secret'),
             'role_id' => $gebruikerRole->id,
         ]);
 
         $klantRole = Role::where('slug', 'client')->first();
         User::factory()->create([
-            'name' => 'client',
+            'name' => 'Client',
             'email' => 'klant@smit.net',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('secret'),
             'role_id' => $klantRole->id,
         ]);
     }
