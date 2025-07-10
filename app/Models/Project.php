@@ -9,6 +9,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $description
+ * @property string $keyType
+ * @property int $company_id
+ *
+ * @property-read Company $company
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Phase> $phases
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, WorkedTime> $workedTimes
+ */
+
 class Project extends Model
 {
     /** @use HasFactory<ProjectFactory> */

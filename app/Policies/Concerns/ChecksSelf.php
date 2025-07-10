@@ -7,12 +7,6 @@ use App\Models\User;
 
 trait ChecksSelf
 {
-    /** @deprecated  */
-    protected function isSelf(User $user, User $model): bool
-    {
-        return $user->id === $model->id;
-    }
-
     protected function isClientSelf(User $user, Client $client): bool
     {
         return $user->id === $client->user_id;

@@ -4,9 +4,8 @@ namespace App\Policies;
 
 use App\Models\Company;
 use App\Models\User;
-use App\Policies\Concerns\ChecksRoles;
 use App\Policies\Concerns\ChecksClientCompany;
-use Illuminate\Auth\Access\Response;
+use App\Policies\Concerns\ChecksRoles;
 
 class CompanyPolicy
 {

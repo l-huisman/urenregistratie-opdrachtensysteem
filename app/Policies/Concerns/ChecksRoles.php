@@ -10,5 +10,10 @@ trait ChecksRoles
     {
         return $user->role->slug === 'administrator';
     }
+
+    protected function isClient(User $user): bool
+    {
+        return $user->role->slug === 'client';
+    }
 }
 

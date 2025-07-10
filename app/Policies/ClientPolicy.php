@@ -6,7 +6,6 @@ use App\Models\Client;
 use App\Models\User;
 use App\Policies\Concerns\ChecksRoles;
 use App\Policies\Concerns\ChecksSelf;
-use Illuminate\Auth\Access\Response;
 
 class ClientPolicy
 {

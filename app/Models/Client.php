@@ -8,6 +8,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property string $phone_number
+ *
+ * @property-read User $user
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Company> $companies
+ *
+ */
+
 class Client extends Model
 {
     /** @use HasFactory<\Database\Factories\ClientFactory> */

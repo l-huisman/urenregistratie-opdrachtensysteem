@@ -13,6 +13,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @property int $id
+ * @property string name
+ * @property string email
+ * @property string password
+ * @property int role_id
+ *
+ * @property-read Role $role
+ * @property-read Client $client
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, WorkedTime> $workedTimes
+ */
+
 class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */

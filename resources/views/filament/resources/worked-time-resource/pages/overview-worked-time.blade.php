@@ -12,8 +12,8 @@
                 Previous Week
             </button>
             <span class="mx-4 font-semibold text-lg bg-white border border-gray-300 rounded px-4 py-2 shadow-sm">
-                {{ $this->startOfWeek }} -
-                {{ $this->endOfWeek }}
+                {{ Carbon::parse($this->startOfWeek)->format('j F Y') }} -
+                {{ Carbon::parse($this->endOfWeek)->format('j F Y') }}
             </span>
             <button type="submit" name="week" value="{{ $weekOffset + 1 }}" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 border border-gray-300 text-gray-700 flex items-center">
                 Next Week
