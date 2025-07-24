@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Customer\EditCompanyProfile;
+use App\Filament\Customer\Resources\Phase\PhaseResource;
 use App\Filament\Customer\Resources\Project\ProjectResource;
 use App\Models\Company;
 use Filament\Http\Middleware\Authenticate;
@@ -35,6 +36,7 @@ class CustomerPanelProvider extends PanelProvider
             ])
             ->resources([
                 ProjectResource::class,
+                PhaseResource::class,
             ])
             ->pages([
                 Pages\Dashboard::class,
