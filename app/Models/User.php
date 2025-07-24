@@ -4,8 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -24,8 +26,7 @@ use Illuminate\Notifications\Notifiable;
  * @property-read Client $client
  * @property-read \Illuminate\Database\Eloquent\Collection<int, WorkedTime> $workedTimes
  */
-
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasTenants
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, SoftDeletes, Notifiable;
@@ -83,5 +84,15 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         return true; // TODO: Implement some actual logic to determine access
+    }
+
+    public function getTenants(Panel $panel): \Illuminate\Database\Eloquent\Collection
+    {
+        return $this->client->companies;
+    }
+
+    public function canAccessTenant(Model $tenant): bool
+    {
+        return $this->client->companies()->whereKey($tenant)->exists();
     }
 }

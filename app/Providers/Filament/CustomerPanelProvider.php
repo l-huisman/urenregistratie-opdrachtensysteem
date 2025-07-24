@@ -2,7 +2,8 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Customer\Auth\Login;
+use App\Filament\Customer\EditCompanyProfile;
+use App\Models\Company;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -11,7 +12,6 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -26,18 +26,20 @@ class CustomerPanelProvider extends PanelProvider
         return $panel
             ->id('customer')
             ->path('customer')
+            ->tenant(Company::class)
+            ->tenantProfile(EditCompanyProfile::class)
+            ->login()
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->discoverResources(in: app_path('Filament/Customer/Resources'), for: 'App\\Filament\\Customer\\Resources')
-            ->discoverPages(in: app_path('Filament/Customer/Pages'), for: 'App\\Filament\\Customer\\Pages')
+            ->resources([
+                // TODO: Add resources here...
+            ])
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Customer/Widgets'), for: 'App\\Filament\\Customer\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                // TODO: Add widgets here...
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -52,7 +54,6 @@ class CustomerPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])
-            ->login(Login::class);
+            ]);
     }
 }
