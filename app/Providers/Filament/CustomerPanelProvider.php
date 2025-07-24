@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Customer\EditCompanyProfile;
+use App\Filament\Customer\Resources\Project\ProjectResource;
 use App\Models\Company;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -33,7 +34,7 @@ class CustomerPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             ->resources([
-                // TODO: Add resources here...
+                ProjectResource::class,
             ])
             ->pages([
                 Pages\Dashboard::class,
