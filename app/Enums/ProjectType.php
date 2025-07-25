@@ -4,6 +4,7 @@ namespace App\Enums;
 
 enum ProjectType: string
 {
-    case BUNDLE = 'bundle';
-    case FIXED = 'fixed';
+    case HOURLY = 'HOURLY';
+    case FIXED = 'FIXED';
+    case INTERNAL = 'INTERNAL';
 }

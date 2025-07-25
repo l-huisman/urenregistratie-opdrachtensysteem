@@ -14,9 +14,14 @@ return new class extends Migration
     {
         Schema::create('phases', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Project::class)->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->text('description')->nullable();
+            $table->enum('status', ['PLANNED', 'IN_PROGRESS', 'COMPLETED', 'CANCELED']);
+            $table->dateTime('start_date')->nullable();
+            $table->dateTime('end_date')->nullable();
+            $table->decimal('estimated_hours', 8, 2)->default(0.00);
+            $table->decimal('actual_hours', 8, 2)->default(0.00);
+            $table->foreignIdFor(Project::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });

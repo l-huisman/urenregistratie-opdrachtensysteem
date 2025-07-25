@@ -20,6 +20,8 @@ return new class extends Migration {
             $table->foreignIdFor(PriceAgreement::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
+
+
     }
 
     /**

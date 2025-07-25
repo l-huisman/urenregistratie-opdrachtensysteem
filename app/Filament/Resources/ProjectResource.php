@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\ProjectType;
+use App\Enums\Status;
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Models\Project;
 use Filament\Forms;
@@ -30,9 +30,9 @@ class ProjectResource extends Resource
                 Forms\Components\Textarea::make('description')
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\Select::make('type')
-                    ->options(ProjectType::class)
-                    ->default(ProjectType::BUNDLE)
+                Forms\Components\Select::make('status')
+                    ->options(Status::class)
+                    ->default(Status::PLANNED)
                     ->required(),
 
                 // TODO: Add the remaining Phase fields when the Phase resource is created
