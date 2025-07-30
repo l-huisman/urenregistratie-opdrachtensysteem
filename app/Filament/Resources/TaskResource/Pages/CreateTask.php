@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\TaskResource\Pages;
 
+use App\Enums\Status;
 use App\Filament\Resources\TaskResource;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -22,7 +23,13 @@ class CreateTask extends CreateRecord
                     ->prefixIcon('heroicon-o-user')
                     ->label('Responsible User')
                     ->searchable()
-                    ->columnSpan(2),
+                    ->columnSpan(1),
+                Select::make('status')
+                    ->options(Status::class)
+                    ->default(Status::PLANNED)
+                    ->prefixIcon('heroicon-o-clipboard')
+                    ->label('Task Status')
+                    ->columnSpan(1),
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255)
