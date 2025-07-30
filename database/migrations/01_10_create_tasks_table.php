@@ -18,8 +18,9 @@ return new class extends Migration {
             $table->foreignIdFor(Phase::class)->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->text('description')->nullable();
+            $table->enum('status', ['PLANNED', 'IN_PROGRESS', 'COMPLETED', 'CANCELED'])->default('PLANNED');
             $table->decimal('estimated_hours', 8, 2)->default(0.00);
-            // TODO: The question is whether that a task could have a price agreement itself.
+            $table->decimal('actual_hours', 8, 2)->default(0.00);
             $table->timestamps();
             $table->softDeletes();
         });

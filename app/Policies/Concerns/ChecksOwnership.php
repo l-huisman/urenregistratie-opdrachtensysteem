@@ -10,7 +10,7 @@ trait ChecksOwnership
 {
     protected function isProjectOfClient(User $user, Project $project): bool
     {
-        return $project->company->clients->where('user_id', $user->id)->exists();
+        return $project->company->clients()->whereKey($user->id)->exists();
     }
 }
 

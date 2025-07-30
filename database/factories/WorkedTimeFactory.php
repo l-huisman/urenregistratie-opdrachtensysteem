@@ -23,7 +23,6 @@ class WorkedTimeFactory extends Factory
     {
         return [
             'user_id' => User::query()->inRandomOrder()->value('id') ?? User::factory(),
-            'project_id' => Project::query()->inRandomOrder()->value('id') ?? Project::factory(),
             'phase_id' => Phase::query()->inRandomOrder()->value('id') ?? Phase::factory(),
             'task_id' => Task::query()->inRandomOrder()->value('id') ?? Task::factory(),
             'description' => $this->faker->sentence,

@@ -16,14 +16,13 @@ return new class extends Migration {
     {
         Schema::create('worked_time', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Project::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Phase::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Task::class)->nullable()->constrained()->cascadeOnDelete();
             $table->text('description');
             $table->decimal('worked_hours', 8, 2);
             $table->boolean('billable')->default(true);
             $table->date('date')->default(now()->toDateString());
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Phase::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Task::class)->nullable()->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });

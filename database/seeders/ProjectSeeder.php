@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Enums\ProjectType;
+use App\Enums\Status;
 use App\Models\Project;
 use Illuminate\Database\Seeder;
 
@@ -17,7 +17,9 @@ class ProjectSeeder extends Seeder
             [
                 'name' => 'Gripp Clone',
                 'description' => 'Een urenregistratie systeem waarin medewerkers hun uren kunnen registreren en klanten hun projecten kunnen beheren.',
-                'type' => ProjectType::BUNDLE,
+                'status' => Status::PLANNED,
+                'start_date' => now(),
+                'end_date' => now()->addDays(30),
                 'company_id' => 1,
             ]
         );
