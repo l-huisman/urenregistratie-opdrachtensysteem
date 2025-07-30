@@ -1,18 +1,21 @@
 <?php
 
-namespace App\Filament\Resources\TaskResource\Pages;
+namespace App\Filament\Resources\PhaseResource\RelationManagers;
 
-use App\Filament\Resources\TaskResource;
-use Filament\Actions;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
-class EditTask extends EditRecord
+class TasksRelationManager extends RelationManager
 {
-    protected static string $resource = TaskResource::class;
+    protected static string $relationship = 'tasks';
 
     public function form(Form $form): Form
     {
@@ -75,15 +78,50 @@ class EditTask extends EditRecord
             ]);
     }
 
-    protected function getRedirectUrl(): string
+    public function table(Table $table): Table
     {
-        return $this->getResource()::getUrl('index');
-    }
+        return $table
+            ->columns([
+                TextColumn::make('name')
+                    ->searchable(),
+                TextColumn::make('phase.name')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('user.name')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('status')
+                    ->sortable()
+                    ->toggleable(),
+                TextColumn::make('estimated_hours')
+                    ->numeric()
+                    ->sortable()
+                    ->icon('heroicon-o-clock'),
+                TextColumn::make('actual_hours')
+                    ->numeric()
+                    ->sortable()
+                    ->icon('heroicon-o-clock'),
+                TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('deleted_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
+            ->actions([
+                EditAction::make(),
+            ])
+            ->bulkActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
+            ]);
     }
 }
