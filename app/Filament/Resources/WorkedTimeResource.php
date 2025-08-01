@@ -44,56 +44,6 @@ class WorkedTimeResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('user.name')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('project.name')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('phase.name')
-                    ->sortable()
-                ->searchable(),
-                Tables\Columns\TextColumn::make('task.name')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('worked_hours')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('billable')
-                    ->boolean()
-                ->sortable(),
-                Tables\Columns\TextColumn::make('date')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
-            ]);
-    }
-
     public static function getPages(): array
     {
         return [
