@@ -30,6 +30,13 @@ class WorkedTime extends Model
     protected $guarded = [];
     protected $table = 'worked_time';
 
+    protected function casts(): array
+    {
+        return [
+            'date' => 'immutable_date',
+        ];
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

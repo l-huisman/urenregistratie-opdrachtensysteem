@@ -9,6 +9,7 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -25,6 +26,7 @@ use Illuminate\Notifications\Notifiable;
  * @property-read Role $role
  * @property-read Client $client
  * @property-read \Illuminate\Database\Eloquent\Collection<int, WorkedTime> $workedTimes
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Company> $companies
  */
 class User extends Authenticatable implements FilamentUser, HasTenants
 {
@@ -79,6 +81,11 @@ class User extends Authenticatable implements FilamentUser, HasTenants
     public function workedTimes(): HasMany
     {
         return $this->hasMany(WorkedTime::class);
+    }
+
+    public function companies():BelongsToMany
+    {
+        return $this->belongsToMany(Company::class);
     }
 
     public function canAccessPanel(Panel $panel): bool
