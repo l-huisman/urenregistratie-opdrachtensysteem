@@ -7,8 +7,6 @@ use App\Models\WorkedTime;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
 
 class WorkedTimeResource extends Resource
 {
@@ -22,9 +20,6 @@ class WorkedTimeResource extends Resource
             ->schema([
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name')
-                    ->required(),
-                Forms\Components\Select::make('project_id')
-                    ->relationship('project', 'name')
                     ->required(),
                 Forms\Components\Select::make('phase_id')
                     ->relationship('phase', 'name')

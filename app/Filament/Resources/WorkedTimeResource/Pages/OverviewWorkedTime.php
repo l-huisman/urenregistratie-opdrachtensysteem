@@ -4,104 +4,102 @@ namespace App\Filament\Resources\WorkedTimeResource\Pages;
 
 use App\Filament\Resources\WorkedTimeResource;
 use App\Models\User;
+use Carbon\CarbonImmutable;
+use Carbon\WeekDay;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\Page;
-use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Contracts\HasTable;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Date;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Session;
+use Livewire\Attributes\Url;
 
 
-class OverviewWorkedTime extends Page implements HasTable
+/**
+ * @property-read EloquentCollection<int, User> $users
+ * @property-read Collection<int, CarbonImmutable> $days
+ * @property-read array<int<1, 53>> $weekSelectOptions
+ * @property-read int[] $yearSelectOptions
+ */
+class OverviewWorkedTime extends Page
 {
     protected static string $resource = WorkedTimeResource::class;
     protected static string $view = 'filament.resources.worked-time-resource.pages.overview-worked-time';
 
-    use Tables\Concerns\InteractsWithTable;
+    #[Url]
+    public ?int $week;
 
-    public $startOfWeek;
-    public $endOfWeek;
-  
-    public int $weekOffset = 0;
+    #[Url]
+    public ?int $year;
+
+    #[Session]
+    public bool $showWeekendDays = false;
+
 
     public function mount(Request $request): void
     {
-        $this->weekOffset = (int)$request->query('week', 0);
+        $this->week ??= Date::today()->week;
+        $this->year ??= Date::today()->year;
     }
 
-    public function getTableQuery()
+    public function goToCurrentWeek()
     {
-        $this->startOfWeek = Carbon::now()->addWeeks($this->weekOffset)->subWeek()->startOfWeek();
-        $this->endOfWeek = Carbon::now()->addWeeks($this->weekOffset)->subWeek()->endOfWeek();
+        $today = Date::today();
 
-        return User::whereHas('workedTimes', function ($query) {
-            $query->whereBetween('date', [$this->startOfWeek, $this->endOfWeek]);
-        })
-            ->with(['workedTimes' => function ($query) {
-                $query->whereBetween('date', [$this->startOfWeek, $this->endOfWeek]);
-            }]);
+        $this->week = $today->week;
+        $this->year = $today->year;
     }
 
-    public function getTableColumns(): array
+    #[Computed]
+    protected function users()
     {
-        $startOfWeek = Carbon::now()->addWeeks($this->weekOffset)->subWeek()->startOfWeek();
-        $endOfWeek = Carbon::now()->addWeeks($this->weekOffset)->subWeek()->endOfWeek();
-        $weekdays = collect(range(0, 6))
-            ->map(fn ($i) => $startOfWeek->copy()->addDays($i)->format('l'));
+        return User::query()
+            ->with(['workedTimes' => function (HasMany $workedHours) {
+                $workedHours
+                    ->whereDate('date', '>=', $this->days->first())
+                    ->whereDate('date', '<=', $this->days->last());
+            }])
+            ->get();
+    }
 
-        $columns = [
-            TextColumn::make('name')->label('User'),
-        ];
+    #[Computed]
+    protected function days()
+    {
+        $week = Date::today()
+            ->week($this->week)
+            ->year($this->year)
+            ->toImmutable();
 
-        foreach ($weekdays as $weekday) {
-            $columns[] = TextColumn::make('worked_hours_' . $weekday)
-                ->label($weekday)
-                ->getStateUsing(function ($record) use ($weekday) {
-                    $hours = $record->workedTimes
-                        ->filter(function ($item) use ($weekday) {
-                            return Carbon::parse($item->date)->format('l') === $weekday;
-                        })
-                        ->sum('worked_hours');
-                    return $hours > 0 ? $hours : '-';
-                })
-                ->formatStateUsing(function ($state) {
-                    if ($state === '-') {
-                        return '<span class="inline-block px-2 py-1 border rounded bg-gray-100 text-gray-400">-</span>';
-                    }
-                    $hours = (float)$state;
-                    $color = 'bg-red-200 border-red-400 text-red-800';
-                    $tooltip = 'Less than 4 hours';
-                    if ($hours >= 8) {
-                        $color = 'bg-green-200 border-green-400 text-green-800';
-                        $tooltip = '8 or more hours';
-                    } elseif ($hours >= 4) {
-                        $color = 'bg-yellow-200 border-yellow-400 text-yellow-800';
-                        $tooltip = 'Between 4 and 8 hours';
-                    }
-                    return "<span class=\"inline-block px-2 py-1 border rounded $color\" title=\"$tooltip\">$hours</span>";
-                })
-                ->html();
-        }
-        return $columns;
+        $firstDayOfWeek = WeekDay::Monday;
+        $lastDayOfWeek = $this->showWeekendDays ? WeekDay::Sunday : WeekDay::Friday;
+
+        return collect($week->startOfWeek($firstDayOfWeek)->toPeriod($week->endOfWeek($lastDayOfWeek)));
+    }
+
+    #[Computed]
+    protected function weekSelectOptions()
+    {
+        return range(1, 53); // does every year have 53 weeks tho
+    }
+
+    #[Computed]
+    protected function yearSelectOptions()
+    {
+        $currentYear = Date::today()->year;
+
+        return range($currentYear - 5, $currentYear + 1);
     }
 
     protected function getHeaderActions(): array
     {
         return [
-            \Filament\Actions\Action::make('back')
+            Action::make('back')
                 ->label('Back to List')
                 ->icon('heroicon-m-arrow-uturn-left')
-                ->url(fn () => WorkedTimeResource::getUrl('index')),
+                ->url(fn () => WorkedTimeResource::getUrl()),
         ];
-    }
-
-    public function previousWeek()
-    {
-        return redirect()->route(request()->route()->getName(), ['week' => $this->weekOffset - 1]);
-    }
-
-    public function nextWeek()
-    {
-        return redirect()->route(request()->route()->getName(), ['week' => $this->weekOffset + 1]);
     }
 }
