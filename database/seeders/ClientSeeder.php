@@ -14,28 +14,24 @@ class ClientSeeder extends Seeder
      */
     public function run(): void
     {
-        $companies = Company::all();
+        $company = Company::factory()->create([
+            'name' => 'Smit',
+            'address' => 'Rijksweg 86, 1906 BK Limmen',
+            'phone_number' => '0884470000',
+            'email' => 'contact@smit.net',
+            'website' => 'https://www.smit.net',
+            'kvk_number' => '34246947',
+            'logo' => '/logos/smit.jpg',
+        ]);
 
-        if ($companies->isEmpty()) {
-            $this->command->info('No companies found, creating some first...');
-            Company::factory()->count(5)->create();
-            $companies = Company::all();
-        }
+        /* @var User $user */
+        $user = User::query()->firstWhere('role_id', 1);
 
-        $users = User::where('role_id', 1)->get();
-        $clients = [];
+        /** @var Client $client */
+        $client = Client::factory()->create([
+            'user_id' => $user->id,
+        ]);
 
-        foreach ($users as $user) {
-            $client = Client::factory()->create([
-                'user_id' => $user->id,
-            ]);
-            $clients[] = $client;
-        }
-
-
-        foreach ($clients as $client) {
-            $company = $companies->random();
-            $client->companies()->attach($company->id);
-        }
+        $client->companies()->attach($company->id);
     }
 }
